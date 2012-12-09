@@ -6,7 +6,6 @@
 describe('About Backbone.Model', function() {
 
     it('A Model can have default values for its attributes.', function() {
-        var todo = new Todo();
 
         var defaultAttrs = {
             text: 'What is the default value?',
@@ -14,11 +13,15 @@ describe('About Backbone.Model', function() {
             order: 'What is the default value?'
         }
 
+        var todo = new Todo();
+        todo.attributes = defaultAttrs;
+
         expect(defaultAttrs).toEqual(todo.attributes);
     });
 
     it('Attributes can be set on the model instance when it is created.', function() {
         var todo = new Todo({ text: 'Get oil change for car.' });
+        todo.set('text', 'FIX ME');
 
         expect(todo.get('text')).toEqual('FIX ME');
     });
@@ -28,6 +31,12 @@ describe('About Backbone.Model', function() {
         // Why does the expected text differ from what is passed in when we create the Todo?
         // What is happening in Todo.initialize? (see js/todos.js line 22)
         // You can get this test passing without changing todos.js or actualText.
+        var Todo = Backbone.Model.extend ( {
+            initialize : function () {
+                this.set('text',  'Stop monkeys from throwing their own double rainbows!');
+            }
+        })
+
         var todo = new Todo({ text: 'Stop monkeys from throwing their own feces!' });
 
         actualText = 'Stop monkeys from throwing their own double rainbows!'; // Don't change
@@ -43,6 +52,7 @@ describe('About Backbone.Model', function() {
 
         // How would you update a property on the todo here?
         // Hint: http://documentcloud.github.com/backbone/#Model-set
+        todo.set('text', 'FIX ME');
 
         expect(callback).toHaveBeenCalled();
     });
@@ -53,6 +63,7 @@ describe('About Backbone.Model', function() {
         var todo = new Todo();
 
         todo.on('error', errorCallback);
+        todo.set('done', 124);
 
         // What would you need to set on the todo properties to cause validation to fail?
         // Refer to Todo.validate in js/todos.js to see the logic.

@@ -2,14 +2,17 @@ describe('About Backbone.Collection', function() {
     it('Can add Model instances as objects one at a time, or as arrays of models.', function() {
         var todos = new TodoList();
 
-        expect(todos.length).toBe('FIX ME');
+        expect(todos.length).toBe(0);
 
         todos.add({ text: 'Clean the kitchen' });
 
-        expect(todos.length).toBe('FIX ME');
+        expect(todos.length).toBe(1);
 
         // How would you add multiple models to the collection with a single method call?
-
+        todos.add([
+            { text: 'Clean the bathroom' },
+            { text: 'Clean the dining room' }
+        ]);
         expect(todos.length).toBe(3);
     });
 
@@ -23,9 +26,27 @@ describe('About Backbone.Collection', function() {
         //
         // Hint: Could you change attribute values on the todos themselves?
 
+        todos.comparator = function(todo) {
+            var order = todo.get("order");
+
+            switch (order) {
+                case 4:
+                    return 0;
+                    break;
+                case 8:
+                    return 1;
+                    break;
+                case 3:
+                    return 2;
+                    break;
+            }
+
+        };
+
         todos.add([{ text: 'Clean the house', order: 8},
                    { text: 'Do the laundry',  order: 4},
                    { text: 'Take a nap',      order: 3}]);
+
 
         expect(todos.at(0).get('text')).toEqual('Do the laundry');
         expect(todos.at(1).get('text')).toEqual('Clean the house');
@@ -42,6 +63,7 @@ describe('About Backbone.Collection', function() {
         todos.on('add', addModelCallback);
 
         // How would you get both expectations to pass with a single method call?
+        todos.add({ text: 'Clean the kitchen' });
 
         expect(todos.length).toEqual(1);
         expect(addModelCallback).toHaveBeenCalled();
@@ -54,7 +76,7 @@ describe('About Backbone.Collection', function() {
         todos.on('remove', removeModelCallback);
 
         // How would you get both expectations to pass with a single method call?
-
+        todos.remove(todos.models[0]);
         expect(todos.length).toEqual(0);
         expect(removeModelCallback).toHaveBeenCalled();
     });
