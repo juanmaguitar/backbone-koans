@@ -81,7 +81,7 @@
         render: function() {
             var self = this;
 
-            $(self.el).empty().template(TEMPLATE_URL + '/templates/item.html', self.model.toJSON(), function() {
+            $(self.el).empty().template(TEMPLATE_URL + 'templates/item.html', self.model.toJSON(), function() {
                 self.setText();
             });
 
@@ -139,7 +139,7 @@
 
             TEMPLATE_URL = options.templateUrl || TEMPLATE_URL;
 
-            parentElt.template(TEMPLATE_URL + '/templates/app.html', {}, function() {
+            parentElt.template(TEMPLATE_URL + 'templates/app.html', {}, function() {
                 self.setElement($('#todoapp'));
 
                 self.input = self.$("#new-todo");
@@ -160,7 +160,7 @@
                     remaining:  self.todos.remaining().length
                 };
 
-            $('#todo-stats').empty().template(TEMPLATE_URL + '/templates/stats.html', data);
+            $('#todo-stats').empty().template(TEMPLATE_URL + 'templates/stats.html', data);
 
             return this;
         },
